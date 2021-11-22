@@ -35,6 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   yaru: ^0.2.0
+  yaru_icons: ^0.1.0
+  yaru_widgets: 
+    git: https://github.com/ubuntu/yaru_widgets.dart.git
 
 dev_dependencies:
   flutter_test:

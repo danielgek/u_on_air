@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:yaru/yaru.dart' as yaru_theme;
+import 'package:yaru_icons/yaru_icons.dart';
+import 'package:yaru_widgets/yaru_widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,92 +18,82 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: yaru_theme.yaruLight,
       darkTheme: yaru_theme.yaruDark,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: YaruMasterDetailPage(
+        appBarHeight: 48,
+        leftPaneWidth: 280,
+        previousIconData: YaruIcons.go_previous,
+        searchHint: 'Search...',
+        searchIconData: YaruIcons.search,
+        pageItems: pageItems,
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
+final pageItems = <YaruPageItem>[
+  YaruPageItem(
+    title: 'Calendar',
+    iconData: YaruIcons.calendar,
+    builder: (_) => Column(
+      children: [
+        YaruSection(headline: 'headline', children: [
+          const YaruRow(
+            trailingWidget: Text('trailingWidget'),
+            actionWidget: Text('actionWidget'),
+            description: 'description',
+          ),
+          YaruCheckboxRow(
+            onChanged: (_) {},
+            enabled: true,
+            text: "Check Box",
+            value: true,
+          ),
+          YaruExtraOptionRow(
+            actionLabel: 'Repeat Keys',
+            actionDescription: 'Key presses repeat when key is held down',
+            value: true,
+            onChanged: (_) {},
+            onPressed: () {},
+            iconData: YaruIcons.go_previous,
+          ),
+          YaruSliderRow(
+            value: 50,
+            onChanged: (_) {},
+            min: 0,
+            max: 100,
+            actionLabel: 'Slider',
+          ),
+          YaruSwitchRow(
+            value: true,
+            onChanged: (_) {},
+            actionDescription: 'Switch',
+            trailingWidget: Text('trailingWidget'),
+          ),
+          YaruToggleButtonsRow(
+            actionLabel: 'actionLabel',
+            onPressed: (_) {},
+            labels: ['One', 'Two', 'Three'],
+            selectedValues: [false, false, false],
+          ),
+        ])
+      ],
+    ),
+  ),
+  YaruPageItem(
+    title: 'Addons',
+    iconData: YaruIcons.addon_filled,
+    builder: (_) => YaruExtraOptionRow(
+      actionLabel: 'Repeat Keys',
+      actionDescription: 'Key presses repeat when key is held down',
+      value: true,
+      onChanged: (_) {},
+      onPressed: () {},
+      iconData: const IconData(0),
+    ),
+  ),
+  YaruPageItem(
+    title: 'Address Book',
+    iconData: YaruIcons.address_book,
+    builder: (_) => const Text('Address Book'),
+  ),
+];

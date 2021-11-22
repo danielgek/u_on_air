@@ -170,6 +170,22 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+  yaru_icons:
+    dependency: "direct main"
+    description:
+      name: yaru_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
+  yaru_widgets:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "23c6c2f0cfb8f6a52fdab2602f7fe8d38181758b"
+      url: "https://github.com/ubuntu/yaru_widgets.dart.git"
+    source: git
+    version: "1.0.0+1"
 sdks:
   dart: ">=2.15.0-268.18.beta <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=2.2.0"
