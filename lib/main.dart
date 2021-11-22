@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:nm/nm.dart';
 
 import 'package:yaru/yaru.dart' as yaru_theme;
 import 'package:yaru_icons/yaru_icons.dart';
@@ -99,8 +100,48 @@ final pageItems = <YaruPageItem>[
     ),
   ),
   YaruPageItem(
-    title: 'Address Book',
+    title: 'wifi',
     iconData: YaruIcons.address_book,
-    builder: (_) => const Text('Address Book'),
+    builder: (_) => Row(
+      children: [
+        TextButton(
+            onPressed: () async {
+              var client = NetworkManagerClient();
+              await client.connect();
+              NetworkManagerDevice device;
+              try {
+                device = client.devices.firstWhere(
+                    (d) => d.deviceType == NetworkManagerDeviceType.wifi);
+              } catch (e) {
+                print('No WiFi devices found');
+                return;
+              }
+
+              var wireless = device.wireless!;
+
+              print('Scanning WiFi device ${device.hwAddress}...');
+              await wireless.requestScan();
+
+              wireless.propertiesChanged.listen((propertyNames) {
+                if (propertyNames.contains('LastScan')) {
+                  /// Get APs with names.
+                  var accessPoints = wireless.accessPoints
+                      .where((a) => a.ssid.isNotEmpty)
+                      .toList();
+
+                  // Sort by signal strength.
+                  accessPoints.sort((a, b) => b.strength.compareTo(a.strength));
+
+                  for (var accessPoint in accessPoints) {
+                    var ssid = utf8.decode(accessPoint.ssid);
+                    var strength = accessPoint.strength.toString().padRight(3);
+                    print("  ${accessPoint.frequency}MHz $strength '$ssid'");
+                  }
+                }
+              });
+            },
+            child: Text('wifi'))
+      ],
+    ),
   ),
 ];
