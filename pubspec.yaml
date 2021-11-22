@@ -38,6 +38,7 @@ dependencies:
   yaru_icons: ^0.1.0
   yaru_widgets: 
     git: https://github.com/ubuntu/yaru_widgets.dart.git
+  desktop_notifications: ^0.6.1
 
 dev_dependencies:
   flutter_test:

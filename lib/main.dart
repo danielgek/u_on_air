@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:yaru/yaru.dart' as yaru_theme;
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
+import 'package:desktop_notifications/desktop_notifications.dart';
 
 void main() {
   runApp(const MyApp());
@@ -71,7 +74,11 @@ final pageItems = <YaruPageItem>[
           ),
           YaruToggleButtonsRow(
             actionLabel: 'actionLabel',
-            onPressed: (_) {},
+            onPressed: (_) async {
+              var client = NotificationsClient();
+              await client.notify('Hello World!');
+              await client.close();
+            },
             labels: ['One', 'Two', 'Three'],
             selectedValues: [false, false, false],
           ),
