@@ -63,7 +63,7 @@ packages:
       name: dbus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.6"
+    version: "0.6.8"
   desktop_notifications:
     dependency: "direct main"
     description:
@@ -116,6 +116,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
+  material_color_utilities:
+    dependency: transitive
+    description:
+      name: material_color_utilities
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   meta:
     dependency: transitive
     description:
@@ -129,7 +136,7 @@ packages:
       name: nm
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1"
+    version: "0.4.2"
   path:
     dependency: transitive
     description:
@@ -190,7 +197,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.4.8"
   typed_data:
     dependency: transitive
     description:
@@ -225,13 +232,13 @@ packages:
       name: yaru_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.2"
   yaru_widgets:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "23c6c2f0cfb8f6a52fdab2602f7fe8d38181758b"
+      resolved-ref: "21e120c7641dc6ffaa0bf69623b02f57b7ff974a"
       url: "https://github.com/ubuntu/yaru_widgets.dart.git"
     source: git
     version: "1.0.0+1"

@@ -8,6 +8,8 @@ import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
 
+import 'pages/wifi.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -36,15 +38,19 @@ class MyApp extends StatelessWidget {
 
 final pageItems = <YaruPageItem>[
   YaruPageItem(
-    title: 'Calendar',
-    iconData: YaruIcons.calendar,
+    title: 'Widget ShowCase',
+    iconData: YaruIcons.app_grid,
     builder: (_) => Column(
       children: [
-        YaruSection(headline: 'headline', children: [
-          const YaruRow(
-            trailingWidget: Text('trailingWidget'),
-            actionWidget: Text('actionWidget'),
+        YaruSection(headline: 'Yaru Section headline', children: [
+          YaruRow(
+            trailingWidget: Text('yaru row'),
+            actionWidget: TextButton(
+              child: Text('action'),
+              onPressed: () {},
+            ),
             description: 'description',
+            enabled: true,
           ),
           YaruCheckboxRow(
             onChanged: (_) {},
@@ -58,7 +64,7 @@ final pageItems = <YaruPageItem>[
             value: true,
             onChanged: (_) {},
             onPressed: () {},
-            iconData: YaruIcons.go_previous,
+            iconData: YaruIcons.keyboard_shortcuts,
           ),
           YaruSliderRow(
             value: 50,
@@ -88,60 +94,8 @@ final pageItems = <YaruPageItem>[
     ),
   ),
   YaruPageItem(
-    title: 'Addons',
-    iconData: YaruIcons.addon_filled,
-    builder: (_) => YaruExtraOptionRow(
-      actionLabel: 'Repeat Keys',
-      actionDescription: 'Key presses repeat when key is held down',
-      value: true,
-      onChanged: (_) {},
-      onPressed: () {},
-      iconData: const IconData(0),
-    ),
-  ),
-  YaruPageItem(
-    title: 'wifi',
-    iconData: YaruIcons.address_book,
-    builder: (_) => Row(
-      children: [
-        TextButton(
-            onPressed: () async {
-              var client = NetworkManagerClient();
-              await client.connect();
-              NetworkManagerDevice device;
-              try {
-                device = client.devices.firstWhere(
-                    (d) => d.deviceType == NetworkManagerDeviceType.wifi);
-              } catch (e) {
-                print('No WiFi devices found');
-                return;
-              }
-
-              var wireless = device.wireless!;
-
-              print('Scanning WiFi device ${device.hwAddress}...');
-              await wireless.requestScan();
-
-              wireless.propertiesChanged.listen((propertyNames) {
-                if (propertyNames.contains('LastScan')) {
-                  /// Get APs with names.
-                  var accessPoints = wireless.accessPoints
-                      .where((a) => a.ssid.isNotEmpty)
-                      .toList();
-
-                  // Sort by signal strength.
-                  accessPoints.sort((a, b) => b.strength.compareTo(a.strength));
-
-                  for (var accessPoint in accessPoints) {
-                    var ssid = utf8.decode(accessPoint.ssid);
-                    var strength = accessPoint.strength.toString().padRight(3);
-                    print("  ${accessPoint.frequency}MHz $strength '$ssid'");
-                  }
-                }
-              });
-            },
-            child: Text('wifi'))
-      ],
-    ),
+    title: 'Wi-fi',
+    iconData: YaruIcons.network_wireless,
+    builder: (_) => const WifiPage(),
   ),
 ];
