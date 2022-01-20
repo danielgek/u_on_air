@@ -94,30 +94,32 @@ class WifiPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<void>(
-        future: client.connect(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: Column(children: const [
-              CircularProgressIndicator(),
-              Text('Connecting to wifi...'),
-            ]));
-          }
+    return Padding(
+        padding: const EdgeInsets.all(8),
+        child: FutureBuilder<void>(
+            future: client.connect(),
+            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: Column(children: const [
+                  CircularProgressIndicator(),
+                  Text('Connecting to wifi...'),
+                ]));
+              }
 
-          NetworkManagerDevice device;
-          try {
-            device = client.devices.firstWhere(
-                (d) => d.deviceType == NetworkManagerDeviceType.wifi);
-          } catch (e) {
-            return Center(child: Text('No wifi device found'));
-          }
-          NetworkManagerDeviceWireless wireless = device.wireless!;
-          wireless.requestScan();
-          return Column(children: [
-            currentConnection(wireless, device),
-            availableNetworks(wireless, device, client),
-          ]);
-        });
+              NetworkManagerDevice device;
+              try {
+                device = client.devices.firstWhere(
+                    (d) => d.deviceType == NetworkManagerDeviceType.wifi);
+              } catch (e) {
+                return Center(child: Text('No wifi device found'));
+              }
+              NetworkManagerDeviceWireless wireless = device.wireless!;
+              wireless.requestScan();
+              return Column(children: [
+                currentConnection(wireless, device),
+                availableNetworks(wireless, device, client),
+              ]);
+            }));
   }
 }
