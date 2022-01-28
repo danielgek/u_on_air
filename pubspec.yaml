@@ -40,6 +40,7 @@ dependencies:
     git: https://github.com/ubuntu/yaru_widgets.dart.git
   nm: ^0.4.1
   desktop_notifications: ^0.6.1
+  ffi: ^1.1.2
 
 dev_dependencies:
   flutter_test:

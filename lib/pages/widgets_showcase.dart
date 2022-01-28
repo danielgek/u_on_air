@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:nm/nm.dart';
+import 'package:yaru/yaru.dart';
 import 'package:yaru_icons/yaru_icons.dart';
 import 'package:yaru_widgets/yaru_widgets.dart';
 import 'package:desktop_notifications/desktop_notifications.dart';
@@ -34,6 +35,8 @@ class WidgetsShowCasePage extends StatelessWidget {
               text: "Check Box",
               value: true,
             ),
+            YaruColorPickerButton(
+                color: YaruColors.canonicalAubergine, onPressed: () {}),
             YaruExtraOptionRow(
               actionLabel: 'Repeat Keys',
               actionDescription: 'Key presses repeat when key is held down',
@@ -42,6 +45,7 @@ class WidgetsShowCasePage extends StatelessWidget {
               onPressed: () {},
               iconData: YaruIcons.keyboard_shortcuts,
             ),
+            YaruOptionButton(onPressed: () {}, iconData: YaruIcons.key),
             YaruSliderRow(
               value: 50,
               onChanged: (_) {},

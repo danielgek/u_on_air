@@ -14,9 +14,13 @@ class WifiPage extends StatelessWidget {
 
   Widget availableNetworks(NetworkManagerDeviceWireless wireless,
       NetworkManagerDevice device, NetworkManagerClient client) {
-    wireless.propertiesChanged.listen((_) {
-      print(_);
-    });
+    // wireless.propertiesChanged.listen((_) {
+    //   print(_);
+    //   print(wireless.mode);
+    //   print(device.state);
+    //   print(device.activeConnection);
+    // });
+
     return YaruSection(
         headline: 'Available networks',
         headerWidget: Text('Available networks'),
@@ -79,47 +83,66 @@ class WifiPage extends StatelessWidget {
 
   Widget currentConnection(
       NetworkManagerDeviceWireless wireless, NetworkManagerDevice device) {
-    String headline = wireless.activeAccessPoint?.ssid != null
-        ? utf8.decode(wireless.activeAccessPoint!.ssid)
-        : 'Not connected';
-    return YaruSection(headline: headline, children: [
-      TextButton(
-          onPressed: () {
-            device.disconnect();
-          },
-          child: Text('Disconnect')),
-    ]);
+    device.propertiesChanged.listen((event) {
+      print(event);
+    });
+
+    return StreamBuilder<List<String>>(
+        stream: device.propertiesChanged.where((p) => p.contains('State')),
+        builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+          if (device.state == NetworkManagerDeviceState.activated) {
+            return YaruSection(
+                headline: utf8.decode(wireless.activeAccessPoint!.ssid),
+                children: [
+                  YaruSingleInfoRow(
+                      infoLabel: "Strength",
+                      infoValue: "${wireless.activeAccessPoint!.strength}%"),
+                  YaruSingleInfoRow(
+                      infoLabel: "Frequency",
+                      infoValue: "${wireless.activeAccessPoint!.frequency}Hz"),
+                  TextButton(
+                      onPressed: () {
+                        device.disconnect();
+                      },
+                      child: Text('Disconnect')),
+                ]);
+          }
+
+          return YaruSection(
+              headline: 'Not connected', children: [Text('Not connected')]);
+        });
   }
 
-  // This widget is the root of your application.
+  // This widgets is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8),
-        child: FutureBuilder<void>(
-            future: client.connect(),
-            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: Column(children: const [
-                  CircularProgressIndicator(),
-                  Text('Connecting to wifi...'),
-                ]));
-              }
+    return YaruPage(
+        child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: FutureBuilder<void>(
+                future: client.connect(),
+                builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: Column(children: const [
+                      CircularProgressIndicator(),
+                      Text('Connecting to wifi...'),
+                    ]));
+                  }
 
-              NetworkManagerDevice device;
-              try {
-                device = client.devices.firstWhere(
-                    (d) => d.deviceType == NetworkManagerDeviceType.wifi);
-              } catch (e) {
-                return Center(child: Text('No wifi device found'));
-              }
-              NetworkManagerDeviceWireless wireless = device.wireless!;
-              wireless.requestScan();
-              return Column(children: [
-                currentConnection(wireless, device),
-                availableNetworks(wireless, device, client),
-              ]);
-            }));
+                  NetworkManagerDevice device;
+                  try {
+                    device = client.devices.firstWhere(
+                        (d) => d.deviceType == NetworkManagerDeviceType.wifi);
+                  } catch (e) {
+                    return Center(child: Text('No wifi device found'));
+                  }
+                  NetworkManagerDeviceWireless wireless = device.wireless!;
+                  wireless.requestScan();
+                  return Column(children: [
+                    currentConnection(wireless, device),
+                    availableNetworks(wireless, device, client),
+                  ]);
+                })));
   }
 }
